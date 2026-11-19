@@ -1,14 +1,5 @@
 # Keripikroll (Responsi Praktikum Mobile)
 
-## Setup
-1. Pastikan Flutter SDK sudah terpasang.
-2. Di folder project ini jalankan (untuk membuat folder android/ios dll):
-   `flutter create .`
-3. `flutter pub get`
-4. Android: pastikan `android/app/src/main/AndroidManifest.xml` punya
-   `<uses-permission android:name="android.permission.INTERNET"/>` di atas tag `<application>`.
-5. `flutter run`
-
 ## Login
 - Username: `admin`
 - Password: `12345`
