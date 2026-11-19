@@ -1,5 +1,7 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import '../controllers/favorite_controller.dart';
 import '../main.dart';
 import '../models/anime.dart';
 import '../services/api_service.dart';
@@ -15,6 +17,9 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   late Future<Anime> _future;
+
+  // Ambil controller sekali di sini — aman karena AppBinding sudah jalan.
+  final FavoriteController _favCtrl = Get.find<FavoriteController>();
 
   @override
   void initState() {
@@ -95,7 +100,7 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    // Tombol favorit: UI berubah sesuai status
+                    // Tombol favorit: reaktif via Hive listenable + controller
                     ValueListenableBuilder(
                       valueListenable:
                           FavoriteService.box.listenable(keys: [a.id]),
@@ -106,7 +111,7 @@ class _DetailPageState extends State<DetailPage> {
                           borderRadius: BorderRadius.circular(8),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(8),
-                            onTap: () => FavoriteService.toggle(a),
+                            onTap: () => _favCtrl.toggle(a),
                             child: Padding(
                               padding: const EdgeInsets.all(12),
                               child: Icon(

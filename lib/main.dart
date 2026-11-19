@@ -1,11 +1,21 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'controllers/favorite_controller.dart';
 import 'pages/login_page.dart';
 import 'pages/main_page.dart';
 import 'services/favorite_service.dart';
 
 const Color kAccent = Color(0xFFFF5A1F);
+
+/// Binding yang dijalankan tepat saat GetMaterialApp pertama kali build.
+class AppBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put<FavoriteController>(FavoriteController(), permanent: true);
+  }
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,9 +32,12 @@ class KeripikrollApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Keripikroll',
       debugShowCheckedModeBanner: false,
+      // Controller diregistrasi di sini — dijamin sudah ada sebelum
+      // widget manapun memanggil Get.find<FavoriteController>().
+      initialBinding: AppBinding(),
       theme: ThemeData(
         brightness: Brightness.dark,
         scaffoldBackgroundColor: Colors.black,

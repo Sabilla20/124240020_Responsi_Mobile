@@ -1,5 +1,7 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import '../controllers/favorite_controller.dart';
 import '../services/favorite_service.dart';
 import 'detail_page.dart';
 
@@ -8,6 +10,9 @@ class FavoritePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get.find aman dipanggil di sini karena AppBinding sudah dijalankan.
+    final FavoriteController favCtrl = Get.find<FavoriteController>();
+
     return Scaffold(
       appBar: AppBar(title: const Text('Daftar Favorit')),
       body: ValueListenableBuilder(
@@ -53,7 +58,11 @@ class FavoritePage extends StatelessWidget {
                   ),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete, color: Colors.red),
-                    onPressed: () => FavoriteService.remove(m['id']),
+                    onPressed: () async {
+                      await FavoriteService.remove(m['id']);
+                      // Sinkronisasi count di controller setelah hapus.
+                      favCtrl.count.value = FavoriteService.count;
+                    },
                   ),
                 ),
               );
